@@ -66,4 +66,7 @@ module friscv_fd(
         .pulso(liga_frisc_edge)
     );       
 
+    // Atribuição dos sinais de depuração
+    assign db_medida = s_medida;
+
 endmodule
