@@ -1,0 +1,8 @@
+/simulation
+/output_files
+/incremental_db
+/db 
+*.qpf
+*.qsf
+*.qar
+*.txt
