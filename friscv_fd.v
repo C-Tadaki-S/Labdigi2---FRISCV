@@ -4,17 +4,15 @@ module friscv_fd(
     input           clock,                  // Clock do circuito
     input           reset,                  // Reseta o circuito       
     input           echo,                   // Echo do sensor 
-    input           conta_bomba,            // Ativa o contador de segundos para a bomba
-    input           zera_bomba,             // Zera o contador de segundos para a bomba 
-    input           liga_frisc,            // Liga o circuito do Frisc-V 
+    input           liga_frisc,             // Liga o circuito do Frisc-V 
     input           liga_suco_1,            // Entrada do botão que ativa para o suco 1
-    input           liga_suco_2,            // Entrada do botão que ativa para o suco 2           
+    input           liga_suco_2,            // Entrada do botão que ativa para o suco 2     
+    input           inicia_medida,          // Inicia a medida no sensor      
 
     // Saídas
     output          copo_posicionado,       // Saída que indica se o copo está posicionado
     output          trigger,                // Trigger do sensor
     output          fim_medida,             // Sinal que indica que a medida foi encerrada
-    output          fim_bomba,              // Sinal que indica que o tempo de ativacao da bomba foi finalizado
     output          liga_frisc_edge,        // Saída do edge detector para ligar o circuito do Frisc-V 
     output          liga_suco_1_edge,       // Saída do edge detector para entrada do botão que ativa para o suco 1
     output          liga_suco_2_edge,       // Saída do edge detector para entrada do botão que ativa para o suco 2    
@@ -46,20 +44,6 @@ module friscv_fd(
 
     // Compara para verificar se há um objeto numa distância de menor ou igual a 10 cm
     assign copo_posicionado = s_medida <= 12'b0000_0000_0101 ? 1'b1 : 1'b0;
-
-    // Contador que conta 1 segundo para manter a bomba ativa
-    contador_m #(
-        .M(50_000_000), 
-        .N(27)
-    ) CONTADOR_BOMBA (
-        .clock(clock),
-        .zera_as(zera_bomba),
-        .zera_s(),
-        .conta(conta_bomba),
-        .Q(),
-        .fim(fim_bomba),
-        .meio()
-    );
 
     edge_detector EDGE_LIGA_SUCO_1(
         .clock(clock),

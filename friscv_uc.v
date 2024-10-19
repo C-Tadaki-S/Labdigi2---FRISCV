@@ -7,14 +7,11 @@ module friscv_uc(
     input           liga_suco_1,        // Entrada do botão que ativa para o suco 1
     input           liga_suco_2,        // Entrada do botão que ativa para o suco 2
     input           copo_posicionado,   // Saída que indica se o copo está posicionado
-    input           fim_medida,         // Sinal que indica que a medida foi encerrada
-    input           fim_bomba,          // Sinal que indica que o tempo de ativacao da bomba foi finalizado
 
     // Saídas
     output reg      ativa_bomba_1,      // Saída para ativar a bomba 1
     output reg      ativa_bomba_2,      // Saída para ativar a bomba 2
-    output reg      conta_bomba,        // Ativa o contador de segundos para a bomba
-    output reg      zera_bomba,         // Zera o contador de segundos para a bomba 
+    output reg      inicia_medida,      // Inicia a medida do sensor
 
     // Saídas de depuração
     output [3:0]    db_estado           // Sinal de depuração do estado da UC
@@ -24,7 +21,12 @@ module friscv_uc(
     reg [3:0] Eatual, Eprox; // 3 bits são suficientes para os estados
 
     // Parâmetros para os estados
-    parameter inicial = 3'b000;
+    parameter inicial = 4'b000;
+    parameter espera_ativar = 4'b0001;
+    parameter ativa_bomba_1 = 4'b0010;
+    parameter ativa_bomba_2 = 4'b0011;
+    parameter final = 4'b0100;
+
 
     // Memória de estado
     always @(posedge clock, posedge reset) begin
@@ -37,34 +39,33 @@ module friscv_uc(
     // Lógica de próximo estado
     always @(*) begin
         case (Eatual)
-            inicial: Eprox = liga_frisc ? ;
 
+            inicial: Eprox = liga_frisc ? espera_ativar;
+            espera_ativar: (liga_suco_1 && copo_posicionado) ? ativa_bomba_1 : (liga_suco_2 && copo_posicionado) ? ? ativa_bomba_2;
+            ativa_bomba_1: (liga_suco_1 && copo_posicionado) ? ativa_bomba_1 : final;
+            ativa_bomba_2: (liga_suco_2 && copo_posicionado) ? ativa_bomba_2 : final;
+            final: inicial;
+            default: Eprox = inicial; 
 
-            default: 
-                Eprox = inicial; 
         endcase
     end
 
     // Lógica de saída (Moore)
     always @(*) begin
 	
-    ativa_bomba_1 = Eatual == ? ;      
-    ativa_bomba_2 = Eatual == ? ;      
-    conta_bomba = Eatual == ? ;        
-    zera_bomba = Eatual == ? ;               
+    inicia_medida = Eatual != inicial ? 1'b1 : 1'b0; 
+    ativa_bomba_1 = Eatual == ativa_bomba_1 ? 1'b1 : 1'b0;      
+    ativa_bomba_2 = Eatual == ativa_bomba_2 ? 1'b1 : 1'b0;      
 
         case(Eatual)
-            : db_estado = 4'b0000;
-            : db_estado = 4'b0001;
-            : db_estado = 4'b0010;
-            : db_estado = 4'b0011;
-            : db_estado = 4'b0100;
-            : db_estado = 4'b0101;
-            : db_estado = 4'b0110;
-            : db_estado = 4'b0111;
-            : db_estado = 4'b1000;
-            : db_estado = 4'b1001;
-            default                   : db_estado = 4'b1110;
+     
+            inicial                 : db_estado = 4'b0000;
+            espera_ativar           : db_estado = 4'b0001;
+            ativa_bomba_1           : db_estado = 4'b0010;
+            ativa_bomba_2           : db_estado = 4'b0011;
+            final                   : db_estado = 4'b0100;
+            default                 : db_estado = 4'b1110;
+
         endcase
 
     end
