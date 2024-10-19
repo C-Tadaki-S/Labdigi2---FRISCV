@@ -18,7 +18,7 @@ module friscv(
     output [3:0]    db_medida_centena,  // Sinal de depuração da centena da medida feita pelo sensor
     output [3:0]    db_medida_dezena,   // Sinal de depuração da dezena da medida feita pelo sensor
     output [3:0]    db_medida_unidade,  // Sinal de depuração da unidade da medida feita pelo sensor
-    output [3:0]    db_estado_friscv_uc,// Sinal de depuração da unidade de controle do Frisc-V
+    output [3:0]    db_estado_friscv_uc // Sinal de depuração da unidade de controle do Frisc-V
     output          db_ativa_bomba_1,   // Sinal de depuração do ativa_bomba_1
     output          db_ativa_bomba_2    // Sinal de depuração do ativa_bomba_2
 );
