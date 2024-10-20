@@ -53,7 +53,7 @@ module interface_hcsr04_uc (
             inicial: 
                 Eprox = medir ? preparacao : inicial; 
             preparacao: 
-                Eprox = envia_trigger;
+                Eprox = medir ? envia_trigger : preparacao;
             envia_trigger:
                 Eprox = espera_echo;
             espera_echo: 
@@ -63,7 +63,7 @@ module interface_hcsr04_uc (
             armazenamento:
                 Eprox = final_medida;
             final_medida: 
-                Eprox = inicial;
+                Eprox = preparacao;
             default: 
                 Eprox = inicial;
         endcase
