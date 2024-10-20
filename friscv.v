@@ -15,10 +15,10 @@ module friscv(
 
 
     // Saídas de depuração
-    output [3:0]    db_medida_centena,  // Sinal de depuração da centena da medida feita pelo sensor
-    output [3:0]    db_medida_dezena,   // Sinal de depuração da dezena da medida feita pelo sensor
-    output [3:0]    db_medida_unidade,  // Sinal de depuração da unidade da medida feita pelo sensor
-    output [3:0]    db_estado_friscv_uc,// Sinal de depuração da unidade de controle do Frisc-V
+    output [6:0]    db_medida_centena,  // Sinal de depuração da centena da medida feita pelo sensor
+    output [6:0]    db_medida_dezena,   // Sinal de depuração da dezena da medida feita pelo sensor
+    output [6:0]    db_medida_unidade,  // Sinal de depuração da unidade da medida feita pelo sensor
+    output [6:0]    db_estado_friscv_uc,// Sinal de depuração da unidade de controle do Frisc-V
     output          db_ativa_bomba_1,   // Sinal de depuração do ativa_bomba_1
     output          db_ativa_bomba_2    // Sinal de depuração do ativa_bomba_2
 );
@@ -33,18 +33,12 @@ module friscv(
         // Entradas
         .clock(clock),                                         // Clock do circuito
         .reset(reset),                                         // Reseta o circuito       
-        .echo(echo),                                           // Echo do sensor 
-        .liga_frisc(liga_frisc),                               // Liga o circuito do Frisc-V 
-        .liga_suco_1(liga_suco_1),                             // Entrada do botão que ativa para o suco 1
-        .liga_suco_2(liga_suco_2),                             // Entrada do botão que ativa para o suco 2           
+        .echo(echo),                                           // Echo do sensor       
         .inicia_medida(s_inicia_medida),                       // Inicia a medida no sensor 
         // Saídas
         .copo_posicionado(s_copo_posicionado),                 // Saída que indica se o copo está posicionado
         .trigger(trigger),                                     // Trigger do sensor
         .fim_medida(),                                         // Sinal que indica que a medida foi encerrada
-        .liga_frisc_edge(liga_frisc_edge),                     // Saída do edge detector para ligar o circuito do Frisc-V 
-        .liga_suco_1_edge(liga_suco_1_edge),                   // Saída do edge detector para entrada do botão que ativa para o suco 1
-        .liga_suco_2_edge(liga_suco_2_edge),                   // Saída do edge detector para entrada do botão que ativa para o suco 2    
 
         // Saídas de depuração
         .db_medida(s_db_medida)                                // Sinal de depuração da medida
@@ -55,9 +49,9 @@ module friscv(
         // Entradas
         .clock(clock),                                          // Clock do circuito
         .reset(reset),                                          // Reseta o circuito
-        .liga_frisc(liga_frisc_edge),                           // Liga o circuito do Frisc-V 
-        .liga_suco_1(liga_suco_1_edge),                         // Entrada do botão que ativa para o suco 1
-        .liga_suco_2(liga_suco_2_edge),                         // Entrada do botão que ativa para o suco 2
+        .liga_frisc(liga_frisc),                                // Liga o circuito do Frisc-V 
+        .liga_suco_1(liga_suco_1),                              // Entrada do botão que ativa para o suco 1
+        .liga_suco_2(liga_suco_2),                              // Entrada do botão que ativa para o suco 2
         .copo_posicionado(s_copo_posicionado),                  // Saída que indica se o copo está posicionado
 
         // Saídas

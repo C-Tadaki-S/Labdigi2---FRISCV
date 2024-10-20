@@ -72,7 +72,7 @@ module interface_hcsr04_uc (
     // Saídas de controle
     always @(*) begin
 
-        zera = Eatual == preparacao ? 1'b1 : 1'b0;
+        zera = Eatual == inicial ? 1'b1 : 1'b0;
         gera = Eatual == envia_trigger ? 1'b1 : 1'b0;
         registra = Eatual == armazenamento ? 1'b1 : 1'b0;
         pronto = Eatual == final_medida ? 1'b1 : 1'b0;
